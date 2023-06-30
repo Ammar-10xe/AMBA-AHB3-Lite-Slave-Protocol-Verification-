@@ -10,10 +10,9 @@ program test(mem_intf vif);
     HSIZE   .rand_mode(0);
     HTRANS  = `H_NONSEQ;
     HWRITE  = `H_WRITE;
+    HSIZE   = `H_SIZE_32;
     endfunction  
-    constraint transfer_sizes {
-    HSIZE == `H_SIZE_32;
-  };
+    constraint transfer_sizes {};
   endclass
 
   environment env;

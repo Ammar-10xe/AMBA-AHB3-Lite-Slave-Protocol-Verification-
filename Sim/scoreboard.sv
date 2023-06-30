@@ -71,10 +71,17 @@ class scoreboard;
        endcase
      end
 
-      `H_SIZE_32 : begin //word Case
-          local_memory[trans.HADDR] = trans.HWDATA [31:0];
-          $display("Word %h  of HWDATA %h written at address %h",trans.HWDATA,trans.HWDATA,trans.HADDR);  
+      `H_SIZE_32: begin // Word Case
+        local_memory[trans.HADDR] = trans.HWDATA[31:0];
+        #1; // Introduce a delay to ensure assignment has taken effect
+        if (trans.HWDATA == local_memory[trans.HADDR]) begin
+          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Data verification successful");
+        end else begin
+          $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Data verification failed");
         end
+        $display("At address \033[34m%h\033[0m, the data written is \033[34m%h\033[0m", trans.HADDR, local_memory[trans.HADDR]);
+      end
+
     endcase 
   endtask
 
