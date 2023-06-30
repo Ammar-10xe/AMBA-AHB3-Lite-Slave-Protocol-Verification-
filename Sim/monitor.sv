@@ -32,7 +32,7 @@ endtask
   forever begin
       trans = new();
       @(posedge vif.MONITOR.HCLK);
-        $display("--------- [MONITOR-TRANSFER: %0d] ---------",no_transaction);
+        // $display("--------- [MONITOR-TRANSFER: %0d] ---------",no_transaction);
         trans.HSEL      = `MON_IF.HSEL;
         trans.HADDR     = `MON_IF.HADDR;
         trans.HWRITE    = `MON_IF.HWRITE;
@@ -53,7 +53,7 @@ endtask
         trans.HRESP     = `MON_IF.HRESP;
         mon2scb.put(trans);
         // print_mon();
-        $display("-----------------------------------------");
+        // $display("-----------------------------------------");
         no_transaction++;
   end
   endtask
