@@ -41,36 +41,36 @@ class scoreboard;
           2'b00 :begin
             local_memory [trans.HADDR] = trans.HWDATA [7:0];
             if (trans.HWDATA[7:0] == local_memory[trans.HADDR][7:0]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Byte[0] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Byte[0] write data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Byte[0] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Byte[0] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[7:0],trans.HWDATA, local_memory[trans.HADDR][7:0]);
           end 
           2'b01 :begin 
             local_memory [trans.HADDR] = trans.HWDATA [15:8];
             if (trans.HWDATA[15:8] == local_memory[trans.HADDR][15:8]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Byte[1] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Byte[1] write data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Byte[1] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Byte[1] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:8],trans.HWDATA, local_memory[trans.HADDR][15:8]);
           end 
           2'b10 :begin
             local_memory [trans.HADDR] = trans.HWDATA [23:16];
             if (trans.HWDATA[23:16] == local_memory[trans.HADDR][23:16]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Byte[2] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Byte[2] write data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Byte[2] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Byte[2] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[23:16],trans.HWDATA, local_memory[trans.HADDR][23:16]);
           end 
           2'b11 : begin
             local_memory [trans.HADDR] = trans.HWDATA [31:24];
             if (trans.HWDATA[31:24] == local_memory[trans.HADDR][31:24]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Byte[3] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Byte[3] write data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Byte[3] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Byte[3] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:24],trans.HWDATA, local_memory[trans.HADDR][31:24]);
           end
@@ -83,9 +83,9 @@ class scoreboard;
             local_memory[trans.HADDR] = trans.HWDATA[15:0];
             #1; // Introducing a delay to ensure assignment has taken effect
             if (trans.HWDATA[15:0] == local_memory[trans.HADDR][15:0]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[1] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[1] write data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[1] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[1] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR][15:0]);
           end
@@ -94,10 +94,10 @@ class scoreboard;
             if (trans.HWDATA[31:16] == local_memory[trans.HADDR][31:16]) begin
             #1; // Introducing a delay to ensure assignment has taken effect
             if (trans.HWDATA[31:16] == local_memory[trans.HADDR][31:16]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[0] Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[0] write data verification successful");
             end 
             else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[0] Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[0] write data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA\033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
           end
@@ -110,9 +110,9 @@ class scoreboard;
         local_memory[trans.HADDR] = trans.HWDATA[31:0];
         #1; // Introducing a delay to ensure assignment has taken effect
         if (trans.HWDATA == local_memory[trans.HADDR]) begin
-          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] Data verification successful");
+          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] write data verification successful");
         end else begin
-          $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] Data verification failed");
+          $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] write data verification failed");
         end
         $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
       end
@@ -121,7 +121,6 @@ class scoreboard;
   endtask
 
   task read_operation(transaction trans); //for read access
-    $display("[Scoreboard]: Non Seq Read Test Passed ..."); 
     case (trans.HSIZE)
       
       `H_SIZE_8 : begin //Byte Case
@@ -179,13 +178,13 @@ class scoreboard;
       `H_SIZE_32 : begin //word Case
          local_read_word  = local_memory[trans.HADDR[31:2]];
           if ( trans.HRDATA == local_read_word)begin
-            $display("[Scoreboard]: Check word test is passed...");
-            $display("Data read is %h from address %h",trans.HRDATA,trans.HADDR);
+            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] read data verification successful");
             end
           else begin
-            $display("[Scoreboard]: Check word test is failed...");
-            $display("Data read is %h from address %h but in local_mem it is %h",trans.HRDATA,trans.HADDR,local_memory[trans.HADDR[31:2]]);
+            $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] read data verification failed");
           end
+          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
+          
         end
     endcase
   endtask
