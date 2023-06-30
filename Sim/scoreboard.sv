@@ -162,14 +162,15 @@ endtask
 
 
 
-  task BUSY_transfer(transaction trans);
-    if(trans.HRESP == `H_OKAY) begin
-      $display("[Scoreboard] - Slave Response OKAY to IDLE Transfer - Test Passed");
-    end
-    else begin
-      $display("[Scoreboard] - Slave Response OKAY to IDLE Transfer - Test Failed");
-    end
-  endtask
+task BUSY_transfer(transaction trans);
+  if (trans.HRESP == `H_OKAY) begin
+    $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Slave provides zero wait state OKAY response to BUSY transfer");
+  end
+  else begin
+    $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Slave does not provide zero wait state OKAY response to BUSY transfer");
+  end
+endtask
+
 
   task main();
     transaction trans;
@@ -179,11 +180,11 @@ endtask
      $display("╚════════════════════════════════════════╝");
       mon2scb.get(trans);
       if (trans.HREADY == `H_READY) begin                               //checks the HREADY response
-        $display("  ✓ Ready for the next transfer - Test Passed");
+        $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Ready for the next transfer");
         if (trans.HSEL ==`H_SLAVE_SELECT) begin                         //checks slave is connected or not  
-          $display("  ✓ Slave is connected - Test Passed");      
+          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Slave is connected");      
           if (trans.HPROT[0] == `HPROT_DATA ) begin                     //checks protection for data access only
-            $display("  ✓ Protection control for data access only - Test Passed");
+            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Protection control for data access only");
             if (hport_data_access) begin                                           
               if      (trans.HTRANS == `H_IDLE)   IDLE_transfer(trans);   //check for the idle response   
               else if (trans.HTRANS == `H_BUSY)   BUSY_transfer(trans);   //checks for the busy response
@@ -203,8 +204,8 @@ endtask
       
       else begin
         if (trans.HREADY == `H_NOT_READY | trans.HSEL == `H_NO_SLAVE_SELECT )
-         $display("  ⌛ Slave needs extra time to sample data"); 
-         $display("  ⚠  Slave is not connected");     
+          $display("\033[1;31m  ⌛ Slave needs extra time to sample data\033[0m");
+          $display("\033[1;31m  ⚠  Slave is not connected\033[0m");
          no_transaction++;
       end
 
