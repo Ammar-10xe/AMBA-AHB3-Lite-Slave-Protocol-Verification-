@@ -64,9 +64,9 @@ class scoreboard;
             local_memory[trans.HADDR] = trans.HWDATA[15:0];
             #1; // Introducing a delay to ensure assignment has taken effect
             if (trans.HWDATA[15:0] == local_memory[trans.HADDR][15:0]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Data verification successful");
+              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[1] Data verification successful");
             end else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[1] Data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR][15:0]);
           end
@@ -74,11 +74,11 @@ class scoreboard;
           1'b1: begin
             if (trans.HWDATA[31:16] == local_memory[trans.HADDR][31:16]) begin
             #1; // Introducing a delay to ensure assignment has taken effect
-            if (trans.HWDATA == local_memory[trans.HADDR]) begin
-              $display("\033[1;32m✓ Test Passed\033[0m - Data verification successful");
+            if (trans.HWDATA[31:16] == local_memory[trans.HADDR][31:16]) begin
+              $display("\033[1;32m✓ Test Passed\033[0m - Halfword[0] Data verification successful");
             end 
             else begin
-              $display("\033[1;31m✘ Test Failed\033[0m - Data verification failed");
+              $display("\033[1;31m✘ Test Failed\033[0m - Halfword[0] Data verification failed");
             end
               $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA\033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
           end
@@ -91,9 +91,9 @@ class scoreboard;
         local_memory[trans.HADDR] = trans.HWDATA[31:0];
         #1; // Introducing a delay to ensure assignment has taken effect
         if (trans.HWDATA == local_memory[trans.HADDR]) begin
-          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Data verification successful");
+          $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] Data verification successful");
         end else begin
-          $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Data verification failed");
+          $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] Data verification failed");
         end
         $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
       end
