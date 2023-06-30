@@ -150,14 +150,16 @@ class scoreboard;
     endcase
   endtask
 
-  task IDLE_transfer(transaction trans);
-    if(trans.HRESP == `H_OKAY) begin
-      $display("  ✓ IDLE transfer - No data transfer is required - Test Passed");
-    end
-    else begin
-      $display("  ✘ Invalid transfer type for IDLE state - Test Failed");
-    end
-  endtask
+
+task IDLE_transfer(transaction trans);
+  if (trans.HRESP == `H_OKAY) begin
+    $display("\033[37m✓ \033[1;32mTest Passed\033[0m - IDLE transfer - No data transfer is required");
+  end
+  else begin
+    $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Invalid transfer type for IDLE state - No data transfer is required");
+  end
+endtask
+
 
 
   task BUSY_transfer(transaction trans);
