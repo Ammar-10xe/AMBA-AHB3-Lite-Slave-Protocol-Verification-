@@ -8,7 +8,8 @@
 //`include "test_htrans_busy.sv"
 // `include "test_non_seq_write_word.sv"
 // `include "test_non_seq_write_halfword.sv"
-`include "test_non_seq_write_byte.sv"
+// `include "test_non_seq_write_byte.sv"
+`include "test_non_seq_write_random.sv"
 //`include "test_write.sv"
 //`include "test_read.sv"
 
