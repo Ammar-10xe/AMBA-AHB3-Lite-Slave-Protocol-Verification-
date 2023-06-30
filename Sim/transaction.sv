@@ -15,7 +15,7 @@ class transaction;
 
  //for debugging purposes ( to allign the address with the local memory ) 
   constraint haddr_within_256B {
-   HADDR inside {[0:256]};
+   HADDR inside {[0:255]};
   };
 //Setting the Slave select to 1
   constraint hsel   { HSEL   == `H_SLAVE_SELECT;

@@ -2,6 +2,7 @@
 class scoreboard;
   mailbox mon2scb;
   int     no_transaction;
+  int     hport_data_access = 1; //for testing purpose
   logic   [`HDATA_SIZE-1:0] local_memory [0:255]; //256 byte of local memory
   logic   [31:0] local_read_byte,local_read_halfword,local_read_word;
 
@@ -172,7 +173,7 @@ class scoreboard;
     transaction trans;
     forever begin
      $display("╔════════════════════════════════════════╗");
-     $display("║       [SCOREBOARD-TRANSFER: %0d]        ║", no_transaction);
+     $display("║       [SCOREBOARD-TRANSFER:  %0d]       ║", no_transaction);
      $display("╚════════════════════════════════════════╝");
       mon2scb.get(trans);
       if (trans.HREADY == `H_READY) begin                               //checks the HREADY response
@@ -181,15 +182,17 @@ class scoreboard;
           $display("  ✓ Slave is connected - Test Passed");      
           if (trans.HPROT[0] == `HPROT_DATA ) begin                     //checks protection for data access only
             $display("  ✓ Protection control for data access only - Test Passed");
-            if      (trans.HTRANS == `H_IDLE)   IDLE_transfer(trans);   //check for the idle response   
-            else if (trans.HTRANS == `H_BUSY)   BUSY_transfer(trans);   //checks for the busy response
-            else if (trans.HTRANS == `H_SEQ)    $display("SEQ is yet to be added");
-              // NONSEQ_transfer(trans); //checks for the seq response
-            else if (trans.HTRANS == `H_NONSEQ) begin
-                 if (trans.HWRITE == `H_WRITE )    write_operation(trans);
-                 else if (trans.HWRITE == `H_READ) read_operation(trans);
+            if (hport_data_access) begin                                           
+              if      (trans.HTRANS == `H_IDLE)   IDLE_transfer(trans);   //check for the idle response   
+              else if (trans.HTRANS == `H_BUSY)   BUSY_transfer(trans);   //checks for the busy response
+              else if (trans.HTRANS == `H_SEQ)    $display("SEQ is yet to be added");
+                // NONSEQ_transfer(trans); //checks for the seq response
+              else if (trans.HTRANS == `H_NONSEQ) begin
+                  if (trans.HWRITE == `H_WRITE )    write_operation(trans);
+                  else if (trans.HWRITE == `H_READ) read_operation(trans);
+              end
+              else $display("  ✘ Protection control is not for data access - Test Failed");
             end
-            else $display("  ✘ Protection control is not for data access - Test Failed");
           end
         end
         no_transaction++;
@@ -197,12 +200,9 @@ class scoreboard;
       end
       
       else begin
-        if (trans.HREADY == `H_NOT_READY )
-         $display("  ⌛ Slave needs extra time to sample data");  
-        else if (trans.HSEL == `H_NO_SLAVE_SELECT) 
-         $display("  ⚠ Slave is not connected");  
-         else 
-         $display("Unknown case");  
+        if (trans.HREADY == `H_NOT_READY | trans.HSEL == `H_NO_SLAVE_SELECT )
+         $display("  ⌛ Slave needs extra time to sample data"); 
+         $display("  ⚠  Slave is not connected");     
          no_transaction++;
       end
 
