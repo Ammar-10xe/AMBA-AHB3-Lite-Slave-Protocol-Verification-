@@ -2,7 +2,7 @@
 class scoreboard;
   mailbox mon2scb;
   int     no_transaction;
-  int     hport_data_access = 1; //for testing purpose
+  int     hport_data_access = 1; //for testing purpose 
   logic   [`HDATA_SIZE-1:0] local_memory [0:255]; //256 byte of local memory
   logic   [31:0] local_read_byte,local_read_halfword,local_read_word;
 
@@ -152,10 +152,10 @@ class scoreboard;
 
   task IDLE_transfer(transaction trans);
     if(trans.HRESP == `H_OKAY) begin
-      $display("[Scoreboard] - Slave Response OKAY to IDLE Transfer - Test Passed");
+      $display("  ✓ IDLE transfer - No data transfer is required - Test Passed");
     end
     else begin
-      $display("[Scoreboard] - Slave Response ERROR to IDLE Transfer - Test Failed");
+      $display("  ✘ Invalid transfer type for IDLE state - Test Failed");
     end
   endtask
 
