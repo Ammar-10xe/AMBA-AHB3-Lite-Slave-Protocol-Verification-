@@ -1,13 +1,17 @@
-
 //-------------------------[NOTE]---------------------------------
 //Particular testcase can be run by uncommenting, and commenting the rest
 //`include "random_test.sv"
+//`include "test_hready_high.sv"
 // `include "test_slave_select.sv"
-// `include "test_hready_high.sv"
-// `include "wr_rd_test.sv"
-//`include "default_rd_test.sv"
-//----------------------------------------------------------------
+//`include "test_hprot.sv"
+//`include "test_htrans_idle.sv"
+//`include "test_htrans_busy.sv"
+// `include "test_non_seq_write_word.sv"
+`include "test_non_seq_write_halfword.sv"
+//`include "test_write.sv"
+//`include "test_read.sv"
 
+//----------------------------------------------------------------
 
 `include "interface.sv"
 module tb();

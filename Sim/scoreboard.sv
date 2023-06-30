@@ -58,28 +58,44 @@ class scoreboard;
        endcase 
      end 
      
-     `H_SIZE_16: begin //Halfword Case
-       case (trans.HADDR[1])
-         1'b0 : begin
-          local_memory [trans.HADDR] = trans.HWDATA [15:0];
-          $display("Halfword0 %h of %h written at address %h",trans.HWDATA [15:0],trans.HWDATA,trans.HADDR);
-        end
-         1'b1 : begin
-          local_memory [trans.HADDR] = trans.HWDATA [31:16];
-          $display("Halfword1 %h of %h written at address %h",trans.HWDATA [31:16],trans.HWDATA,trans.HADDR);
-         end
-       endcase
-     end
+      `H_SIZE_16: begin // Halfword Case
+        case (trans.HADDR[1])
+          1'b0: begin
+            local_memory[trans.HADDR] = trans.HWDATA[15:0];
+            #1; // Introducing a delay to ensure assignment has taken effect
+            if (trans.HWDATA[15:0] == local_memory[trans.HADDR][15:0]) begin
+              $display("\033[1;32m✓ Test Passed\033[0m - Data verification successful");
+            end else begin
+              $display("\033[1;31m✘ Test Failed\033[0m - Data verification failed");
+            end
+              $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR][15:0]);
+          end
+
+          1'b1: begin
+            if (trans.HWDATA[31:16] == local_memory[trans.HADDR][31:16]) begin
+            #1; // Introducing a delay to ensure assignment has taken effect
+            if (trans.HWDATA == local_memory[trans.HADDR]) begin
+              $display("\033[1;32m✓ Test Passed\033[0m - Data verification successful");
+            end 
+            else begin
+              $display("\033[1;31m✘ Test Failed\033[0m - Data verification failed");
+            end
+              $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA\033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
+          end
+          end
+        endcase
+      end
+
 
       `H_SIZE_32: begin // Word Case
         local_memory[trans.HADDR] = trans.HWDATA[31:0];
-        #1; // Introduce a delay to ensure assignment has taken effect
+        #1; // Introducing a delay to ensure assignment has taken effect
         if (trans.HWDATA == local_memory[trans.HADDR]) begin
           $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Data verification successful");
         end else begin
           $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Data verification failed");
         end
-        $display("At address \033[34m%h\033[0m, the data written is \033[34m%h\033[0m", trans.HADDR, local_memory[trans.HADDR]);
+        $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
       end
 
     endcase 
