@@ -35,8 +35,6 @@ class scoreboard;
   // endfunction
 
   task write_operation(transaction trans); //for write access
-   $display("[Scoreboard]: Non Seq Write Test Passed ..."); 
-    
     case (trans.HSIZE)
       `H_SIZE_8 : begin //Byte Case
         case (trans.HADDR[1:0])
@@ -191,8 +189,8 @@ endtask
               else if (trans.HTRANS == `H_SEQ)    $display("SEQ is yet to be added");
                 // NONSEQ_transfer(trans); //checks for the seq response
               else if (trans.HTRANS == `H_NONSEQ) begin
-                  if (trans.HWRITE == `H_WRITE )    write_operation(trans);
-                  else if (trans.HWRITE == `H_READ) read_operation(trans);
+                  if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
+                  else if (trans.HWRITE == `H_READ)   read_operation(trans);
               end
               else $display("  ✘ Protection control is not for data access - Test Failed");
             end

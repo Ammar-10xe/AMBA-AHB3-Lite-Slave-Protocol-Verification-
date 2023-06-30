@@ -7,9 +7,13 @@ program test(mem_intf vif);
     function void pre_randomize();
     HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
+    HSIZE   .rand_mode(0);
     HTRANS  = `H_NONSEQ;
     HWRITE  = `H_WRITE;
     endfunction  
+    constraint transfer_sizes {
+    HSIZE == `H_SIZE_32;
+  };
   endclass
 
   environment env;
