@@ -4,7 +4,7 @@ class scoreboard;
   mailbox mon2scb;
   int     no_transaction;
   int     hport_data_access = 1; //for testing purpose 
-  int     big_endian = 0;        // 0 means little endian else big endian 
+  bit     big_endian;        // 0 means little endian else big endian 
   logic   [`HLOCAL_MEM-1:0] local_memory [0:255]; //256B Byte accessible local memory
   logic   [31:0] local_read_byte,local_read_halfword,local_read_word;
 
@@ -205,8 +205,8 @@ class scoreboard;
               $display("╭────────────────────────────╮");
               $display("│   BIG ENDIAN HALFWORD[1]   │");
               $display("╰────────────────────────────╯");             
-              local_memory[trans.HADDR + 3 ] = trans.HWDATA[31:24];
-              local_memory[trans.HADDR + 2 ] = trans.HWDATA[23:16];
+              local_memory[trans.HADDR + 2 ] = trans.HWDATA[31:24];
+              local_memory[trans.HADDR + 3 ] = trans.HWDATA[23:16];
               #1; // Introducing a delay to ensure assignment has taken effect
               if (trans.HWDATA[31:16] == `Big_Endian_HalfWord1) begin
                 $display("\033[1;32m✓ Test Passed\033[0m -  write data verification successful");
@@ -326,8 +326,6 @@ class scoreboard;
         end
     endcase
   endtask
-
-
 task IDLE_transfer(transaction trans);
   if (trans.HRESP == `H_OKAY) begin
     $display("\033[37m✓ \033[1;32mTest Passed\033[0m - IDLE transfer - No data transfer is required");
@@ -336,8 +334,6 @@ task IDLE_transfer(transaction trans);
     $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Invalid transfer type for IDLE state - No data transfer is required");
   end
 endtask
-
-
 
 task BUSY_transfer(transaction trans);
   if (trans.HRESP == `H_OKAY) begin
