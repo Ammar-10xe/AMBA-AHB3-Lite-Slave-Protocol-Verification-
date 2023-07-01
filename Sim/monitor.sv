@@ -41,14 +41,14 @@ endtask
         trans.HPROT     = `MON_IF.HPROT;
         trans.HTRANS    = `MON_IF.HTRANS;
         trans.HREADY    = `MON_IF.HREADY;
-        if (`MON_IF.HWRITE) begin
-          @(posedge vif.MONITOR.HCLK);
+        // if (`MON_IF.HWRITE) begin
+          // @(posedge vif.MONITOR.HCLK);
           trans.HWDATA    = `MON_IF.HWDATA;
-        end 
-        else begin
-           @(posedge vif.MONITOR.HCLK);
+        // end 
+        // else begin
+          //  @(posedge vif.MONITOR.HCLK);
            trans.HRDATA    = `MON_IF.HRDATA;
-        end
+        // end
         trans.HREADYOUT = `MON_IF.HREADYOUT;
         trans.HRESP     = `MON_IF.HRESP;
         mon2scb.put(trans);

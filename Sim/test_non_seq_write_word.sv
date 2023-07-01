@@ -23,6 +23,7 @@ program test(mem_intf vif);
     my_tr = new();
     env.gen.trans = my_tr;
     env.gen.repeat_count = 25;
+    env.scb.big_endian = 0; //little endian
     $readmemh("local_mem.txt", env.scb.local_memory,0,255); 
     env.run();
   end

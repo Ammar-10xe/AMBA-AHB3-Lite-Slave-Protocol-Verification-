@@ -85,9 +85,13 @@
 `define HPROT_DATA        1'b1
 
 // RTL Inputs 
-  `define  HADDR_SIZE   8
+  `define  HADDR_SIZE   32
   `define  HDATA_SIZE   32
 
 // HREADY
   `define  H_READY      1'b1
   `define  H_NOT_READY  1'b0
+
+  //local memory size 
+  `define HLOCAL_MEM   8
+  
