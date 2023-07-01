@@ -94,4 +94,11 @@
 
   //local memory size 
   `define HLOCAL_MEM   8
-  
+
+  // Need this in scoreboard 
+`define Little_Endian_Word      {local_memory[trans.HADDR + 3], local_memory[trans.HADDR + 2], local_memory[trans.HADDR + 1], local_memory[trans.HADDR]}
+`define Big_Endian_Word         {local_memory[trans.HADDR    ], local_memory[trans.HADDR + 1], local_memory[trans.HADDR + 2], local_memory[trans.HADDR +3]}
+`define Little_Endian_HalfWord0 {local_memory[trans.HADDR + 1], local_memory[trans.HADDR    ]}
+`define Little_Endian_HalfWord1 {local_memory[trans.HADDR + 3], local_memory[trans.HADDR + 2]}
+`define Big_Endian_HalfWord0    {local_memory[trans.HADDR    ], local_memory[trans.HADDR + 1]}
+`define Big_Endian_HalfWord1    {local_memory[trans.HADDR + 2], local_memory[trans.HADDR + 3]}
