@@ -93,7 +93,7 @@
   `define  H_NOT_READY  1'b0
 
   //local memory size 
-  `define HLOCAL_MEM   8
+  `define HLOCAL_MEM   32
 
   // Need this in scoreboard 
 `define Little_Endian_Word      {local_memory[trans.HADDR + 3], local_memory[trans.HADDR + 2], local_memory[trans.HADDR + 1], local_memory[trans.HADDR]}

@@ -13,6 +13,24 @@ class scoreboard;
     this.mon2scb = mon2scb;
   endfunction
 
+  task IDLE_transfer(transaction trans);
+    if (trans.HRESP == `H_OKAY) begin
+      $display("\033[37m✓ \033[1;32mTest Passed\033[0m - IDLE transfer - No data transfer is required");
+    end
+    else begin
+      $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Invalid transfer type for IDLE state - No data transfer is required");
+    end
+  endtask
+
+  task BUSY_transfer(transaction trans);
+    if (trans.HRESP == `H_OKAY) begin
+      $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Slave provides zero wait state OKAY response to BUSY transfer");
+    end
+    else begin
+      $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Slave does not provide zero wait state OKAY response to BUSY transfer");
+    end
+  endtask
+
   task write_operation(transaction trans); //for write access
     case (trans.HSIZE)
       `H_SIZE_8 : begin //Byte Case
@@ -149,6 +167,8 @@ class scoreboard;
        endcase 
      end 
 
+//For Halfword Big ENDIAN Test would fail because the dut is using Little Endian 
+
       `H_SIZE_16: begin // Halfword Case
         case (trans.HADDR[1])      
           1'b0: begin
@@ -156,32 +176,35 @@ class scoreboard;
               $display("╭────────────────────────────╮");
               $display("│  LITTLE ENDIAN HALFWORD[0] │");
               $display("╰────────────────────────────╯");              
-              local_memory[trans.HADDR     ] = trans.HWDATA[7:0 ];
-              local_memory[trans.HADDR + 1 ] = trans.HWDATA[15:8];
+              // local_memory[trans.HADDR     ] = trans.HWDATA[7:0 ];
+              // local_memory[trans.HADDR + 1 ] = trans.HWDATA[15:8];
+              local_memory[trans.HADDR] = {trans.HWDATA[15:8], trans.HWDATA[7:0]};
               
               #1; // Introducing a delay to ensure assignment has taken effect
-              if (trans.HWDATA[15:0] == `Little_Endian_HalfWord0) begin
+              if (trans.HWDATA[15:0] == local_memory[trans.HADDR]) begin
                 $display("\033[1;32m✓ Test Passed\033[0m  -  write data verification successful");
               end else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, `Little_Endian_HalfWord0);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR]);
             end
 
             else begin //Big Endian Halfword 0
               $display("╭────────────────────────────╮");
               $display("│   BIG ENDIAN HALFWORD[0]   │");
               $display("╰────────────────────────────╯");              
-              local_memory[trans.HADDR     ] = trans.HWDATA[15:8];
-              local_memory[trans.HADDR + 1 ] = trans.HWDATA[7:0 ];
+              // local_memory[trans.HADDR     ] = trans.HWDATA[15:8];
+              // local_memory[trans.HADDR + 1 ] = trans.HWDATA[7:0 ];
 
+              local_memory[trans.HADDR] = {trans.HWDATA[7:0], trans.HWDATA[15:8]};
+              
               #1; // Introducing a delay to ensure assignment has taken effect
-              if (trans.HWDATA[15:0] == `Big_Endian_HalfWord0) begin
-                $display("\033[1;32m✓ Test Passed\033[0m -  write data verification successful");
+              if (trans.HWDATA[15:0] == local_memory[trans.HADDR]) begin
+                $display("\033[1;32m✓ Test Passed\033[0m  -  write data verification successful");
               end else begin
-                $display("\033[1;31m✘ Test Failed\033[0m -  write data verification failed");
+                $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, `Big_Endian_HalfWord0);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR]);
             end
           end
 
@@ -190,30 +213,36 @@ class scoreboard;
               $display("╭────────────────────────────╮");
               $display("│  LITTLE ENDIAN HALFWORD[1] │");
               $display("╰────────────────────────────╯");             
-              local_memory[trans.HADDR + 2    ] = trans.HWDATA[23:16];
-              local_memory[trans.HADDR + 3    ] = trans.HWDATA[31:24];
+              // local_memory[trans.HADDR + 2    ] = trans.HWDATA[23:16];
+              // local_memory[trans.HADDR + 3    ] = trans.HWDATA[31:24];
+              local_memory[trans.HADDR] = {trans.HWDATA[31:24], trans.HWDATA[23:16]}; 
+              
               #1; // Introducing a delay to ensure assignment has taken effect
-              if (trans.HWDATA[31:16] == `Little_Endian_HalfWord1) begin
-                $display("\033[1;32m✓ Test Passed\033[0m -  write data verification successful");
-              end else begin
-                $display("\033[1;31m✘ Test Failed\033[0m -  write data verification failed");
+              if (trans.HWDATA[31:16] == local_memory[trans.HADDR]) begin
+                $display("\033[1;32m✓ Test Passed\033[0m  -  write data verification successful");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, `Little_Endian_HalfWord1);
+              else begin
+                $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
+              end
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR]);
             end
 
             else begin //Big Endian Halfword 1
               $display("╭────────────────────────────╮");
               $display("│   BIG ENDIAN HALFWORD[1]   │");
               $display("╰────────────────────────────╯");             
-              local_memory[trans.HADDR + 2 ] = trans.HWDATA[31:24];
-              local_memory[trans.HADDR + 3 ] = trans.HWDATA[23:16];
+              // local_memory[trans.HADDR + 2 ] = trans.HWDATA[31:24];
+              // local_memory[trans.HADDR + 3 ] = trans.HWDATA[23:16];
+              local_memory[trans.HADDR] = {trans.HWDATA[23:16], trans.HWDATA[31:24]}; 
+              
               #1; // Introducing a delay to ensure assignment has taken effect
-              if (trans.HWDATA[31:16] == `Big_Endian_HalfWord1) begin
-                $display("\033[1;32m✓ Test Passed\033[0m -  write data verification successful");
-              end else begin
-                $display("\033[1;31m✘ Test Failed\033[0m -  write data verification failed");
+              if (trans.HWDATA[31:16] == local_memory[trans.HADDR]) begin
+                $display("\033[1;32m✓ Test Passed\033[0m  -  write data verification successful");
+              end 
+              else begin
+                $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, `Big_Endian_HalfWord1);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR]);
             end
           end
         endcase
@@ -224,41 +253,41 @@ class scoreboard;
           $display("╭────────────────────────────╮");
           $display("│     LITTLE ENDIAN WORD     │");
           $display("╰────────────────────────────╯");  
-          local_memory[trans.HADDR     ] = trans.HWDATA[7:0  ];
-          local_memory[trans.HADDR + 1 ] = trans.HWDATA[15:8 ];
-          local_memory[trans.HADDR + 2 ] = trans.HWDATA[23:16];
-          local_memory[trans.HADDR + 3 ] = trans.HWDATA[31:24];
-
+          // local_memory[trans.HADDR     ] = trans.HWDATA[7:0  ];
+          // local_memory[trans.HADDR + 1 ] = trans.HWDATA[15:8 ];
+          // local_memory[trans.HADDR + 2 ] = trans.HWDATA[23:16];
+          // local_memory[trans.HADDR + 3 ] = trans.HWDATA[31:24];
+          local_memory[trans.HADDR] = trans.HWDATA;
           #1; // Introducing a delay to ensure assignment has taken effect
-          if (trans.HWDATA == `Little_Endian_Word) begin
+          if (trans.HWDATA == local_memory[trans.HADDR]) begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - write data verification successful");
           end else begin
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - write data verification failed");
           end
-            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],`Little_Endian_Word);
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
         end
         else begin  // Big endian
           $display("╭────────────────────────────╮");
           $display("│       BIG ENDIAN WORD      │");
           $display("╰────────────────────────────╯"); 
-          local_memory[trans.HADDR     ] = trans.HWDATA[31:24];
-          local_memory[trans.HADDR + 1 ] = trans.HWDATA[23:16];
-          local_memory[trans.HADDR + 2 ] = trans.HWDATA[15:8 ];
-          local_memory[trans.HADDR + 3 ] = trans.HWDATA[7:0  ];
-          
+          // local_memory[trans.HADDR     ] = trans.HWDATA[31:24];
+          // local_memory[trans.HADDR + 1 ] = trans.HWDATA[23:16];
+          // local_memory[trans.HADDR + 2 ] = trans.HWDATA[15:8 ];
+          // local_memory[trans.HADDR + 3 ] = trans.HWDATA[7:0  ];
+           local_memory[trans.HADDR] = {trans.HWDATA[7:0],trans.HWDATA[15:8],trans.HWDATA[23:16], trans.HWDATA[31:24]};
           #1; // Introducing a delay to ensure assignment has taken effect
           if (trans.HWDATA == `Big_Endian_Word) begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - write data verification successful");
           end else begin
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - write data verification failed");
           end
-          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],`Big_Endian_Word);
-      end
+          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
         end
+      end
     endcase 
   endtask
 
-  task read_operation(transaction trans); //for read access
+  task read_operation(transaction trans); //For Read aAccess
     case (trans.HSIZE)
       
       `H_SIZE_8 : begin //Byte Case
@@ -315,34 +344,22 @@ class scoreboard;
 
       `H_SIZE_32 : begin //word Case
          local_read_word  = local_memory[trans.HADDR[31:2]];
+        //  local_read_word  = `Little_Endian_Word;
+         #1;
+          $display("local_read_word is %h",local_read_word);
           if ( trans.HRDATA == local_read_word)begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] read data verification successful");
             end
           else begin
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] read data verification failed");
           end
-          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],local_memory[trans.HADDR]);
+          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,`Little_Endian_Word);
           
         end
     endcase
   endtask
-task IDLE_transfer(transaction trans);
-  if (trans.HRESP == `H_OKAY) begin
-    $display("\033[37m✓ \033[1;32mTest Passed\033[0m - IDLE transfer - No data transfer is required");
-  end
-  else begin
-    $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Invalid transfer type for IDLE state - No data transfer is required");
-  end
-endtask
 
-task BUSY_transfer(transaction trans);
-  if (trans.HRESP == `H_OKAY) begin
-    $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Slave provides zero wait state OKAY response to BUSY transfer");
-  end
-  else begin
-    $display("\033[37m✘ \033[1;31mTest Failed\033[0m - Slave does not provide zero wait state OKAY response to BUSY transfer");
-  end
-endtask
+
 
 
   task main();
