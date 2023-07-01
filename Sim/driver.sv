@@ -15,7 +15,7 @@ class driver;
   task reset;
     wait(vif.HRESETn == 0); // Wait for reset signal to be asserted
     $display("╔═════════════════════════════════════╗");
-    $display("║        [DRIVER] Reset Started        ║");
+    $display("║        [DRIVER] Reset Started       ║");
     $display("╚═════════════════════════════════════╝");
     `DRIV_IF.HSEL   <= 0;
     `DRIV_IF.HADDR  <= 0;
@@ -28,7 +28,7 @@ class driver;
     `DRIV_IF.HREADY <= 0;
     wait(vif.HRESETn == 1); // Wait for reset signal to be de-asserted
     $display("╔═════════════════════════════════════╗");
-    $display("║        [DRIVER] Reset Ended          ║");
+    $display("║        [DRIVER] Reset Ended         ║");
     $display("╚═════════════════════════════════════╝");
   endtask
   
