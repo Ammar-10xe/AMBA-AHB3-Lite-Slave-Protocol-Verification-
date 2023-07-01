@@ -49,8 +49,8 @@ class driver;
     `DRIV_IF.HTRANS  <= trans.HTRANS;
     `DRIV_IF.HREADY  <= trans.HREADY;
     //  $display("-----------------------------------------");
+    @(posedge vif.DRIVER.HCLK); // 1 Cycle dealy so that monitor can sample easily and to avoid race conditions
      no_transaction++;
-    // wait (~`DRIV_IF.HRESP & `DRIV_IF.HREADYOUT); //wait till the HRESP is low and HREADYOUT is high
     // print_drv();
   end
   endtask

@@ -353,9 +353,10 @@ class scoreboard;
           else begin
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] read data verification failed");
           end
-          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,`Little_Endian_Word);
+          $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]]);
           
         end
+        
     endcase
   endtask
 
