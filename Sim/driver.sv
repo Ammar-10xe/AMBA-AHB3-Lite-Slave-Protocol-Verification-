@@ -14,7 +14,9 @@ class driver;
   // Reset method: Resets the interface signals to default/initial values
   task reset;
     wait(vif.HRESETn == 0); // Wait for reset signal to be asserted
-    $display("--------- [DRIVER] Reset Started ---------");
+    $display("╔═════════════════════════════════════╗");
+    $display("║        [DRIVER] Reset Started        ║");
+    $display("╚═════════════════════════════════════╝");
     `DRIV_IF.HSEL   <= 0;
     `DRIV_IF.HADDR  <= 0;
     `DRIV_IF.HWDATA <= 0;
@@ -25,7 +27,9 @@ class driver;
     `DRIV_IF.HTRANS <= 0;
     `DRIV_IF.HREADY <= 0;
     wait(vif.HRESETn == 1); // Wait for reset signal to be de-asserted
-    $display("--------- [DRIVER] Reset Ended ---------");
+    $display("╔═════════════════════════════════════╗");
+    $display("║        [DRIVER] Reset Ended          ║");
+    $display("╚═════════════════════════════════════╝");
   endtask
   
   // Drive task to drive the transaction items to the interface
