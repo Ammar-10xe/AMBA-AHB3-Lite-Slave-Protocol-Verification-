@@ -10,8 +10,8 @@ class scoreboard;
   mailbox mon2scb;
   int     no_transaction;
   int     hport_data_access = 1; //for testing purpose 
-  int     big_endian = 0; // 0 means little endian else big endian 
-  logic   [`HLOCAL_MEM-1:0] local_memory [0:255]; //256 byte of local memory
+  int     big_endian = 0;        // 0 means little endian else big endian 
+  logic   [`HLOCAL_MEM-1:0] local_memory [0:255]; //256B Byte accessible local memory
   logic   [31:0] local_read_byte,local_read_halfword,local_read_word;
 
   //constructor 
@@ -97,7 +97,6 @@ class scoreboard;
           end
 
           1'b1: begin
-            // local_memory[trans.HADDR][31:16] = trans.HWDATA[31:16];
             if (~big_endian) begin //little Endian Halfword 1
               local_memory[trans.HADDR + 2    ] = trans.HWDATA[23:16];
               local_memory[trans.HADDR + 3    ] = trans.HWDATA[31:24];
@@ -124,7 +123,6 @@ class scoreboard;
           end
         endcase
       end
-
 
       `H_SIZE_32: begin // Word Case
         if (~big_endian) begin //little endian (LSB at lowset address)
@@ -158,8 +156,6 @@ class scoreboard;
           $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HWDATA[31:0],`Big_Endian_Word);
       end
         end
-
-
     endcase 
   endtask
 
@@ -286,8 +282,8 @@ endtask
       
       else begin
         if (trans.HREADY == `H_NOT_READY | trans.HSEL == `H_NO_SLAVE_SELECT )
-          $display("\033[1;31m  ⌛ Slave needs extra time to sample data\033[0m");
-          $display("\033[1;31m  ⚠  Slave is not connected\033[0m");
+          $display("⌛\033[1;31m Slave needs extra time to sample data\033[0m");
+          $display("⚠ \033[1;31m Slave is not connected\033[0m");
          no_transaction++;
       end
 
