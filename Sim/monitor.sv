@@ -33,24 +33,24 @@ endtask
       trans = new();
       @(posedge vif.MONITOR.HCLK);
         // $display("--------- [MONITOR-TRANSFER: %0d] ---------",no_transaction);
-        trans.HSEL      = `MON_IF.HSEL;
-        trans.HADDR     = `MON_IF.HADDR;
-        trans.HWRITE    = `MON_IF.HWRITE;
-        trans.HSIZE     = `MON_IF.HSIZE;
-        trans.HBURST    = `MON_IF.HBURST;
-        trans.HPROT     = `MON_IF.HPROT;
-        trans.HTRANS    = `MON_IF.HTRANS;
-        trans.HREADY    = `MON_IF.HREADY;
-        // if (`MON_IF.HWRITE) begin
+        trans.HSEL      <= `MON_IF.HSEL;
+        trans.HADDR     <= `MON_IF.HADDR;
+        trans.HWRITE    <= `MON_IF.HWRITE;
+        trans.HSIZE     <= `MON_IF.HSIZE;
+        trans.HBURST    <= `MON_IF.HBURST;
+        trans.HPROT     <= `MON_IF.HPROT;
+        trans.HTRANS    <= `MON_IF.HTRANS;
+        trans.HREADY    <= `MON_IF.HREADY;
+        //  if (`MON_IF.HWRITE) begin
           // @(posedge vif.MONITOR.HCLK);
-          trans.HWDATA    = `MON_IF.HWDATA;
+          trans.HWDATA    <= `MON_IF.HWDATA;
         // end 
         // else begin
-          //  @(posedge vif.MONITOR.HCLK);
-           trans.HRDATA    = `MON_IF.HRDATA;
+           @(negedge vif.MONITOR.HCLK);
+           trans.HRDATA    <= `MON_IF.HRDATA;
         // end
-        trans.HREADYOUT = `MON_IF.HREADYOUT;
-        trans.HRESP     = `MON_IF.HRESP;
+        trans.HREADYOUT <= `MON_IF.HREADYOUT;
+        trans.HRESP     <= `MON_IF.HRESP;
         mon2scb.put(trans);
         // print_mon();
         // $display("-----------------------------------------");
