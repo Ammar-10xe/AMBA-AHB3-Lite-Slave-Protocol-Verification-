@@ -11,11 +11,11 @@
 //`include "test_non_seq_write_byte.sv"
 // `include "test_write_big_byte.sv"
 // `include "test_write_big_halfword.sv"
-`include "test_write_big_word.sv"
+//`include "test_write_big_word.sv"
 // `include "test_non_seq_write_random.sv"
 // `include "test_non_seq_read_word.sv"
 //`include "test_non_seq_read_halfword.sv"
-
+`include "test_non_seq_read_byte.sv"
 
 //----------------------------------------------------------------
 

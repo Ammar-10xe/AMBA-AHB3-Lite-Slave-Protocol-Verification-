@@ -4,9 +4,9 @@ class scoreboard;
   mailbox mon2scb;
   int     no_transaction;
   int     hport_data_access = 1; //for testing purpose 
-  bit     big_endian;        // 0 means little endian else big endian 
+  bit     big_endian;        // 0 means little endian else big endian (default value == 0)
   logic   [`HLOCAL_MEM-1:0] local_memory [0:255]; //256B Byte accessible local memory
-  logic   [31:0] local_read_byte,local_read_halfword,local_read_word;
+  bit     [31:0] local_read_byte,local_read_halfword,local_read_word;
 
   //constructor 
   function new(mailbox mon2scb);
@@ -287,66 +287,88 @@ class scoreboard;
     endcase 
   endtask
 
-  task read_operation(transaction trans); //For Read aAccess
+  task read_operation(transaction trans); //For Read Access
     case (trans.HSIZE)
       
       `H_SIZE_8 : begin //Byte Case
         case (trans.HADDR[1:0])
           2'b00 : begin
-            local_read_byte = local_memory [trans.HADDR];
-            $display("Byte0 %h read at address %h",local_read_byte[7:0],trans.HADDR);
+            local_read_byte = local_memory[trans.HADDR[31:2]][7:0];
+            #1;
+            if ( trans.HRDATA[7:0] == local_read_byte)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Byte0] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Byte0] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][7:0]);
           end 
           2'b01 : begin
-            local_read_byte = local_memory [trans.HADDR];
-            $display("Byte1 %h read at address %h",local_read_byte[15:8],trans.HADDR);
+            local_read_byte = local_memory[trans.HADDR[31:2]][15:8];
+            #1;
+            if ( trans.HRDATA[15:8] == local_read_byte)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Byte1] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Byte1] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][15:8]);
           end 
           2'b10 : begin
-            local_read_byte = local_memory [trans.HADDR];
-            $display("Byte2 %h read at address %h",local_read_byte[23:16],trans.HADDR);
+            local_read_byte = local_memory[trans.HADDR[31:2]][23:16];
+            #1;
+            if ( trans.HRDATA[23:16] == local_read_byte)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Byte2] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Byte2] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][23:16]);
           end
           2'b11 : begin
-            local_read_byte = local_memory [trans.HADDR];
-            $display("Byte3 %h read at address %h",local_read_byte[31:24],trans.HADDR);
+            local_read_byte = local_memory[trans.HADDR[31:2]][31:24];
+            #1;
+            if ( trans.HRDATA[31:24] == local_read_byte)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Byte2] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Byte2] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][31:24]);
           end
         endcase 
-
-        if ( trans.HRDATA == local_read_byte)begin
-          $display("[Scoreboard]: Check byte Test is passed...");
-          $display("Data read is %h from address %h",trans.HRDATA,trans.HADDR);
-        end
-        else begin
-          $display("[Scoreboard]: Check byte Test is failed...");
-          $display("Data read is %h from address %h",trans.HRDATA,trans.HADDR);
-        end
       end
 
       `H_SIZE_16: begin //Halfword Case
         case (trans.HADDR[1])
           1'b0 : begin
-            local_read_halfword = local_memory [trans.HADDR];
-            $display("Halfword0 %h read at address %h",local_read_halfword[15:0],trans.HADDR);
+            local_read_halfword = local_memory[trans.HADDR[31:2]][15:0];
+            #1;
+            if ( trans.HRDATA[15:0] == local_read_halfword)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [HalfWord0] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [HalfWord0] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][15:0]);
           end
           1'b1 : begin
-            local_read_halfword = local_memory [trans.HADDR];
-            $display("Halfword1 %h read at address %h",local_read_halfword[31:16],trans.HADDR);  
+            local_read_halfword = local_memory[trans.HADDR[31:2]][31:16];
+            #1;
+            if ( trans.HRDATA[31:16] == local_read_halfword)begin
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [HalfWord1] read data verification successful");
+              end
+            else begin
+              $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [HalfWord1] read data verification failed");
+            end
+            $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]][31:16]);  
           end
         endcase
-
-        if ( trans.HRDATA == local_read_halfword)begin
-          $display("[Scoreboard]: Check halfword test is passed...");
-          $display("Data read is %h from address %h",trans.HRDATA,trans.HADDR);
-          end
-        else begin
-          $display("[Scoreboard]: Check halfword test is failed...");
-          $display("Data read is %h from address %h",trans.HRDATA,trans.HADDR);
-        end
       end    
 
       `H_SIZE_32 : begin //word Case
          local_read_word  = local_memory[trans.HADDR[31:2]];
-        //  local_read_word  = `Little_Endian_Word;
          #1;
-          $display("local_read_word is %h",local_read_word);
           if ( trans.HRDATA == local_read_word)begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - [Word] read data verification successful");
             end
@@ -354,7 +376,6 @@ class scoreboard;
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - [Word] read data verification failed");
           end
           $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR,trans.HRDATA,local_memory[trans.HADDR[31:2]]);
-          
         end
         
     endcase
