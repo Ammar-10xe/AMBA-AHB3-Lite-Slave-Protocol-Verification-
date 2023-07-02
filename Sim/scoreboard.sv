@@ -403,8 +403,6 @@ class scoreboard;
   endtask
 
 
-
-
   task main();
     transaction trans;
     forever begin
@@ -421,20 +419,35 @@ class scoreboard;
             if (hport_data_access) begin                                           
               if      (trans.HTRANS == `H_IDLE)   IDLE_transfer(trans);   //check for the idle response   
               else if (trans.HTRANS == `H_BUSY)   BUSY_transfer(trans);   //checks for the busy response
-              else if (trans.HTRANS == `H_SEQ)    $display("SEQ is yet to be added");
-                // NONSEQ_transfer(trans); //checks for the seq response
-              else if (trans.HTRANS == `H_NONSEQ) begin
+              else if (trans.HTRANS == `H_SEQ )   begin
                   if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
-                  else if (trans.HWRITE == `H_READ)   read_operation(trans);
+                  else if (trans.HWRITE == `H_READ  ) read_operation(trans);
+              end   
+              else if     (trans.HTRANS == `H_NONSEQ) begin
+                  if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
+                  else if (trans.HWRITE == `H_READ  ) read_operation(trans);
               end
-              else $display("  ✘ Protection control is not for data access - Test Failed");
             end
+            else $display("  ✘ Protection control is not for data access - Test Failed");
           end
+          if (trans.HBURST == `H_SINGLE | `H_WRAP4 | `H_INCR4) begin
+            if (trans.HBURST == `H_SINGLE) begin
+            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Single transfer burst "); 
+            end
+            else if (trans.HBURST == `H_WRAP4) begin
+            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat wrapping burst ");
+            end
+            else if (trans.HBURST == `H_INCR4) begin
+            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat incrementing burst ");                 
+            end
+            else begin
+            $display("  ✘ HBURST is arbitrary - Test Failed");
+            end 
+          end   
         end
         no_transaction++;
-  
       end
-      
+        
       else begin
         if (trans.HREADY == `H_NOT_READY | trans.HSEL == `H_NO_SLAVE_SELECT )
           $display("⌛\033[1;31m Slave needs extra time to sample data\033[0m");
@@ -442,7 +455,7 @@ class scoreboard;
          no_transaction++;
       end
 
-    end
+  end
   
   endtask
   
