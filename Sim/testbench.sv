@@ -20,7 +20,7 @@
 // `include "test_seq_write_random.sv"
 // `include "test_bonus_read_write.sv"
 // `include "test_write_4wrap.sv"
-`include "test_4INCR_write.sv"
+// `include "test_4INCR_write.sv"
 //----------------------------------------------------------------
 
 `include "interface.sv"

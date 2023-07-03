@@ -432,13 +432,19 @@ class scoreboard;
           end
           if (trans.HBURST == `H_SINGLE | `H_WRAP4 | `H_INCR4) begin
             if (trans.HBURST == `H_SINGLE) begin
-            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Single transfer burst "); 
+              if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
+              else if (trans.HWRITE == `H_READ  ) read_operation(trans);  
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Single transfer burst "); 
             end
             else if (trans.HBURST == `H_WRAP4) begin
-            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat wrapping burst ");
+              if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
+              else if (trans.HWRITE == `H_READ  ) read_operation(trans);   
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat wrapping burst ");
             end
             else if (trans.HBURST == `H_INCR4) begin
-            $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat incrementing burst ");                 
+              if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
+              else if (trans.HWRITE == `H_READ  ) read_operation(trans);                 
+              $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat incrementing burst ");                 
             end
             else begin
             $display("  ✘ HBURST is arbitrary - Test Failed");
