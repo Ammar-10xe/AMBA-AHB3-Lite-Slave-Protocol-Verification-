@@ -49,7 +49,6 @@ class driver;
     `DRIV_IF.HTRANS  <= trans.HTRANS;
     `DRIV_IF.HREADY  <= trans.HREADY;
     //  $display("-----------------------------------------");
-    @(posedge vif.DRIVER.HCLK); // 1 Cycle dealy so that monitor can sample easily and to avoid race conditions
      no_transaction++;
     // print_drv();
   end

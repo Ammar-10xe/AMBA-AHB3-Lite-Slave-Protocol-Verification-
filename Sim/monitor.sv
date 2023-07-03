@@ -29,9 +29,9 @@ endtask
 
   //Samples the interface signal and send the sample packet to scoreboard
   task main();
+    @(posedge vif.MONITOR.HCLK);
   forever begin
       trans = new();
-      @(posedge vif.MONITOR.HCLK);
         // $display("--------- [MONITOR-TRANSFER: %0d] ---------",no_transaction);
         trans.HSEL      <= `MON_IF.HSEL;
         trans.HADDR     <= `MON_IF.HADDR;
@@ -41,14 +41,14 @@ endtask
         trans.HPROT     <= `MON_IF.HPROT;
         trans.HTRANS    <= `MON_IF.HTRANS;
         trans.HREADY    <= `MON_IF.HREADY;
-        //  if (`MON_IF.HWRITE) begin
-          // @(posedge vif.MONITOR.HCLK);
+        if (`MON_IF.HWRITE) begin
+          @(posedge vif.MONITOR.HCLK);
           trans.HWDATA    <= `MON_IF.HWDATA;
-        // end 
-        // else begin
-           @(posedge vif.MONITOR.HCLK);
+        end 
+        else begin
+          @(posedge vif.MONITOR.HCLK);
            trans.HRDATA    <= `MON_IF.HRDATA;
-        // end
+        end
         trans.HREADYOUT <= `MON_IF.HREADYOUT;
         trans.HRESP     <= `MON_IF.HRESP;
         mon2scb.put(trans);
