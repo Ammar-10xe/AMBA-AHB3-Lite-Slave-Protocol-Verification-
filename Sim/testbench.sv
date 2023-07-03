@@ -19,7 +19,9 @@
 //`include "test_non_seq_write_random.sv"
 //`include "test_non_seq_read_random.sv"
 //`include "test_seq_write_random.sv"
-`include "test_seq_read_random.sv"
+//`include "test_seq_read_random.sv"
+//`include "test_burst_single_write_random.sv"
+`include "test_burst_single_read_random.sv"
 
 
 
