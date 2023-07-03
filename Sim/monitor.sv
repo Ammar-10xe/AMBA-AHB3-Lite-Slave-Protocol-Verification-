@@ -43,14 +43,14 @@ endtask
         trans.HREADY    <= `MON_IF.HREADY;
         if (`MON_IF.HWRITE) begin
           @(posedge vif.MONITOR.HCLK);
-          trans.HWDATA    <= `MON_IF.HWDATA;
+          trans.HWDATA   <= `MON_IF.HWDATA;
         end 
         else begin
           @(posedge vif.MONITOR.HCLK);
-           trans.HRDATA    <= `MON_IF.HRDATA;
+           trans.HRDATA  <= `MON_IF.HRDATA;
         end
-        trans.HREADYOUT <= `MON_IF.HREADYOUT;
-        trans.HRESP     <= `MON_IF.HRESP;
+        trans.HREADYOUT  <= `MON_IF.HREADYOUT;
+        trans.HRESP      <= `MON_IF.HRESP;
         mon2scb.put(trans);
         // print_mon();
         // $display("-----------------------------------------");

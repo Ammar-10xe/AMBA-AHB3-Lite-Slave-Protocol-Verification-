@@ -1,17 +1,17 @@
 `include "amba_ahb_defines.sv"
 class transaction;
-  rand bit                   HSEL;
-  rand bit [`HADDR_SIZE-1:0] HADDR;
-  rand bit [`HDATA_SIZE-1:0] HWDATA;
-  bit      [`HDATA_SIZE-1:0] HRDATA;
-  rand bit                   HWRITE;
-  rand bit [            2:0] HSIZE;
-  rand bit [            2:0] HBURST;
-  rand bit [            3:0] HPROT;
-  rand bit [            1:0] HTRANS;
-  bit                        HREADYOUT;
-  rand bit                   HREADY;
-  bit                        HRESP;
+  rand logic                    HSEL;
+  rand logic  [`HADDR_SIZE-1:0] HADDR;
+  rand logic  [`HDATA_SIZE-1:0] HWDATA;
+  logic       [`HDATA_SIZE-1:0] HRDATA;
+  rand logic                    HWRITE;
+  rand logic  [            2:0] HSIZE;
+  rand logic  [            2:0] HBURST;
+  rand logic  [            3:0] HPROT;
+  rand logic  [            1:0] HTRANS;
+  logic                         HREADYOUT;
+  rand logic                    HREADY;
+  logic                         HRESP;
 
  //for debugging purposes ( to allign the address with the local memory ) 
   constraint haddr_within_256B {
