@@ -46,7 +46,7 @@ endtask
           trans.HWDATA    <= `MON_IF.HWDATA;
         // end 
         // else begin
-           @(negedge vif.MONITOR.HCLK);
+           @(posedge vif.MONITOR.HCLK);
            trans.HRDATA    <= `MON_IF.HRDATA;
         // end
         trans.HREADYOUT <= `MON_IF.HREADYOUT;

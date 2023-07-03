@@ -16,8 +16,9 @@
 // `include "test_non_seq_read_word.sv"
 //`include "test_non_seq_read_halfword.sv"
 //`include "test_non_seq_read_byte.sv"
-`include "test_read_random.sv"
-
+// `include "test_read_random.sv"
+// `include "test_seq_write_random.sv"
+`include "test_bonus_read_write.sv"
 //----------------------------------------------------------------
 
 `include "interface.sv"
