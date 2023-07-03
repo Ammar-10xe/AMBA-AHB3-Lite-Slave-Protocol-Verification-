@@ -3,7 +3,7 @@
 
 program test(mem_intf vif);
    
-   bit  ctrl_rw;
+  bit [4:0] ctrl_rw;
   class my_trans extends transaction;
     function void pre_randomize();
         HTRANS  .rand_mode(0);
@@ -13,7 +13,7 @@ program test(mem_intf vif);
         HTRANS  = `H_NONSEQ;
         HSIZE   = `H_SIZE_32;
 
-        if (ctrl_rw == 0) begin
+        if (ctrl_rw % 2 == 0) begin
             HWRITE =`H_READ;
         end 
         else begin
