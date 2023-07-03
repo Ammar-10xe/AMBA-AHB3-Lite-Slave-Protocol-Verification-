@@ -23,13 +23,12 @@
 // `include "test_burst_single_write_random.sv"
 // `include "test_burst_single_read_random.sv"
 // `include "test_burst_wrap4_write.sv"
-`include "test_burst_wrap4_read.sv"
-
-
+// `include "test_burst_wrap4_read.sv"
+// `include "test_burst_4incr_write.sv"
+// `include "test_burst_4incr_read.sv"
 
 // `include "test_bonus_read_write.sv"
-// `include "test_write_4wrap.sv"
-// `include "test_4INCR_write.sv"
+
 
 //----------------------------------------------------------------
 

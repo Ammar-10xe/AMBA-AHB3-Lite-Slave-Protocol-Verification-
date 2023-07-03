@@ -13,7 +13,7 @@ program test(mem_intf vif);
     HADDR   .rand_mode(0);
     HADDR   =  prev_HADDR;
     HTRANS  = `H_SEQ;
-    HWRITE  = `H_WRITE;
+    HWRITE  = `H_READ;
     HSIZE   = `H_SIZE_32;
 
     prev_HADDR    = prev_HADDR + (2**HSIZE );
@@ -35,6 +35,7 @@ program test(mem_intf vif);
     my_tr                = new();
     env.gen.trans        = my_tr;
     env.gen.repeat_count = 25;
+    env.scb.hport_data_access = 0;
     $readmemh("local_mem.txt", env.scb.local_memory,0,255); 
     env.run();
   end
