@@ -7,9 +7,12 @@ program test(mem_intf vif);
     function void pre_randomize();
     HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
+    HBURST  .rand_mode(0);
+    HBURST  = `H_WRAP8;    
     HTRANS  = `H_IDLE;
     HWRITE  = `H_WRITE;
-    endfunction  
+    endfunction
+    constraint single_burst{};   
   endclass
 
   environment env;

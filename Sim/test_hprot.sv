@@ -7,10 +7,13 @@ program test(mem_intf vif);
     function void pre_randomize();
         HPROT  .rand_mode(0);
         HTRANS .rand_mode(0);
-        HPROT = 4'd1;
+        HBURST .rand_mode(0);
+        HBURST = `H_WRAP8;
+        HPROT  = 4'd1;
         HTRANS = 2'bx;
     endfunction  
-    constraint data_protection{}; 
+    constraint data_protection{};
+    constraint single_burst{};  
   endclass
 
   environment env;

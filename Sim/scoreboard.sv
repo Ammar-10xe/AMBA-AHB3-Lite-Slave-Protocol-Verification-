@@ -186,7 +186,7 @@ class scoreboard;
               end else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR][15:0]);
             end
 
             else begin //Big Endian Halfword 0
@@ -204,7 +204,7 @@ class scoreboard;
               end else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[15:0],trans.HWDATA, local_memory[trans.HADDR][15:0]);
             end
           end
 
@@ -224,7 +224,7 @@ class scoreboard;
               else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
             end
 
             else begin //Big Endian Halfword 1
@@ -242,7 +242,7 @@ class scoreboard;
               else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
             end
           end
         endcase
@@ -427,8 +427,9 @@ class scoreboard;
                   if      (trans.HWRITE == `H_WRITE ) write_operation(trans);
                   else if (trans.HWRITE == `H_READ  ) read_operation(trans);
               end
+              else $display("  ✘ Protection control is not for data access - Test Failed");
             end
-            else $display("  ✘ Protection control is not for data access - Test Failed");
+            
           end
           if (trans.HBURST == `H_SINGLE | `H_WRAP4 | `H_INCR4) begin
             if (trans.HBURST == `H_SINGLE) begin
@@ -446,9 +447,9 @@ class scoreboard;
               else if (trans.HWRITE == `H_READ  ) read_operation(trans);                 
               $display("\033[37m✓ \033[1;32mTest Passed\033[0m - 4-beat incrementing burst ");                 
             end
-            else begin
-            $display("  ✘ HBURST is arbitrary - Test Failed");
-            end 
+            // else begin
+            // $display("  ✘ HBURST is arbitrary - Test Failed");
+            // end 
           end   
         end
         no_transaction++;

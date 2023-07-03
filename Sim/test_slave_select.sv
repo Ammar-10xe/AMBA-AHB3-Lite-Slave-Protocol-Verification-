@@ -8,13 +8,16 @@ program test(mem_intf vif);
         HSEL   .rand_mode(0);
         HREADY .rand_mode(0);
         HPROT  .rand_mode(0);
+        HBURST .rand_mode(0);
+        HBURST = `H_WRAP8;
         HPROT  = 4'b0010; // Privileged access
         HSEL   =`H_SLAVE_SELECT;
         HREADY =`H_READY; 
     endfunction
     constraint hsel{};
     constraint hready{};  
-    constraint data_protection{}; 
+    constraint data_protection{};
+    constraint single_burst{}; 
   endclass
 
   environment env;

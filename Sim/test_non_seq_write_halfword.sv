@@ -8,11 +8,14 @@ program test(mem_intf vif);
     HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
     HSIZE   .rand_mode(0);
+    HBURST  .rand_mode(0);
+    HBURST  = `H_WRAP8;        
     HTRANS  = `H_NONSEQ;
     HWRITE  = `H_WRITE;
     HSIZE   = `H_SIZE_16;
     endfunction  
     constraint transfer_sizes {};
+    constraint single_burst{};     
   endclass
 
   environment env;

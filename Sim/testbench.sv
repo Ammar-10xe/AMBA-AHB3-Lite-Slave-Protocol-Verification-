@@ -1,5 +1,6 @@
 //-------------------------[NOTE]---------------------------------
 //Particular testcase can be run by uncommenting, and commenting the rest
+
 //`include "random_test.sv"
 //`include "test_hready_high.sv"
 // `include "test_slave_select.sv"
@@ -7,13 +8,13 @@
 //`include "test_htrans_idle.sv"
 //`include "test_htrans_busy.sv"
 // `include "test_non_seq_write_word.sv"
-// `include "test_non_seq_write_halfword.sv"
+// `include "test_non_seq_read_word.sv"
+ `include "test_non_seq_write_halfword.sv"
 //`include "test_non_seq_write_byte.sv"
 // `include "test_write_big_byte.sv"
 // `include "test_write_big_halfword.sv"
 //`include "test_write_big_word.sv"
 // `include "test_non_seq_write_random.sv"
-// `include "test_non_seq_read_word.sv"
 //`include "test_non_seq_read_halfword.sv"
 //`include "test_non_seq_read_byte.sv"
 // `include "test_read_random.sv"
@@ -21,6 +22,7 @@
 // `include "test_bonus_read_write.sv"
 // `include "test_write_4wrap.sv"
 // `include "test_4INCR_write.sv"
+
 //----------------------------------------------------------------
 
 `include "interface.sv"
