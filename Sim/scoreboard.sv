@@ -167,8 +167,6 @@ class scoreboard;
        endcase 
      end 
 
-//For Halfword Big ENDIAN Test would fail because the dut is using Little Endian 
-
       `H_SIZE_16: begin // Halfword Case
         case (trans.HADDR[1])      
           1'b0: begin
@@ -224,7 +222,7 @@ class scoreboard;
               else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][15:0]);
             end
 
             else begin //Big Endian Halfword 1
@@ -242,7 +240,7 @@ class scoreboard;
               else begin
                 $display("\033[1;31m✘ Test Failed\033[0m  -  write data verification failed");
               end
-                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][31:16]);
+                $display("At address \033[34m%h\033[0m, Expected \033[34m%h\033[0m, of HWDATA \033[34m%h\033[0m, Got \033[34m%h\033[0m", trans.HADDR, trans.HWDATA[31:16],trans.HWDATA, local_memory[trans.HADDR][15:0]);
             end
           end
         endcase

@@ -1,5 +1,3 @@
-//Test to check the Big Endiance of Halfword 
-
 `include "amba_ahb_defines.sv"
 `include "environment.sv"
 
@@ -9,12 +7,12 @@ program test(mem_intf vif);
     function void pre_randomize();
     HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
-    HSIZE   .rand_mode(0);
+    HBURST  .rand_mode(0);
+    HBURST  = `H_WRAP8;      
     HTRANS  = `H_NONSEQ;
-    HWRITE  = `H_WRITE;
-    HSIZE   = `H_SIZE_16;
+    HWRITE  = `H_READ;
     endfunction  
-    constraint transfer_sizes {};
+    constraint single_burst{}; 
   endclass
 
   environment env;
@@ -25,8 +23,7 @@ program test(mem_intf vif);
     my_tr = new();
     env.gen.trans = my_tr;
     env.gen.repeat_count = 25;
-    env.scb.hport_data_access = 1;
-    env.scb.big_endian = 1; //big endiance
+    env.scb.big_endian = 0;
     $readmemh("local_mem.txt", env.scb.local_memory,0,255); 
     env.run();
   end
