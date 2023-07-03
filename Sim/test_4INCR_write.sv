@@ -4,25 +4,20 @@
 program test(mem_intf vif);
 
   class my_trans extends transaction;
-    
-    bit [5:0] temp_variable;
+  
     bit [`HADDR_SIZE-1:0] prev_HADDR = 0; // variable to store the previous address
     function void pre_randomize();
     HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
     HSIZE   .rand_mode(0);
     HADDR   .rand_mode(0);
-    if (temp_variable == 4**HSIZE) begin
-        prev_HADDR = 32'd0;
-        temp_variable = 5'd0;
-    end
     HADDR   =  prev_HADDR;
     HTRANS  = `H_SEQ;
     HWRITE  = `H_WRITE;
     HSIZE   = `H_SIZE_32;
 
     prev_HADDR    = prev_HADDR + (2**HSIZE );
-    temp_variable = temp_variable + (2**HSIZE);
+
     endfunction  
   constraint haddr_within_256B {
    HADDR inside {[0:255]};
