@@ -14,7 +14,7 @@ program test(mem_intf vif);
     HBURST  = `H_WRAP8;  
     HADDR   = prev_HADDR;
     HTRANS  = `H_SEQ;
-    HWRITE  = `H_WRITE;
+    HWRITE  = `H_READ;
     prev_HADDR = prev_HADDR + (2**HSIZE);
     endfunction  
   constraint single_burst{};       
