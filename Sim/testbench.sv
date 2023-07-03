@@ -27,7 +27,7 @@
 // `include "test_burst_4incr_write.sv"
 // `include "test_burst_4incr_read.sv"
 // `include "test_waited_transfer.sv"
-`include "test_bonus_read_write.sv"
+// `include "test_bonus_read_write.sv"
 
 
 //----------------------------------------------------------------

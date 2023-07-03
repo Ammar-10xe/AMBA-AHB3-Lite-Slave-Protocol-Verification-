@@ -6,11 +6,11 @@ program test(mem_intf vif);
   bit [4:0] ctrl_rw;
   class my_trans extends transaction;
     function void pre_randomize();
-        HTRANS  .rand_mode(0);
+        HBURST  .rand_mode(0);
         HSIZE   .rand_mode(0);
         HADDR   .rand_mode(0);
         HADDR   = 32'd16;
-        HTRANS  = `H_NONSEQ;
+        HBURST  =`H_SINGLE;
         HSIZE   = `H_SIZE_32;
 
         if (ctrl_rw % 2 == 0) begin
@@ -23,6 +23,7 @@ program test(mem_intf vif);
     
     endfunction  
     constraint transfer_sizes {};
+    constraint single_burst {};
   endclass
 
   environment env;
@@ -33,6 +34,7 @@ program test(mem_intf vif);
     my_tr = new();
     env.gen.trans = my_tr;
     env.gen.repeat_count = 10;
+    env.scb.hport_data_access = 0;
     $readmemh("local_mem.txt", env.scb.local_memory,0,255); 
     env.run();
   end
