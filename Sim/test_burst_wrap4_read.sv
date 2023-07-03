@@ -8,7 +8,6 @@ program test(mem_intf vif);
     bit [5:0] temp_variable;
     bit [`HADDR_SIZE-1:0] prev_HADDR = 0; // variable to store the previous address
     function void pre_randomize();
-    HTRANS  .rand_mode(0);
     HWRITE  .rand_mode(0);
     HSIZE   .rand_mode(0);
     HADDR   .rand_mode(0);
@@ -17,8 +16,7 @@ program test(mem_intf vif);
         temp_variable = 5'd0;
     end
     HADDR   =  prev_HADDR;
-    HTRANS  = `H_SEQ;
-    HWRITE  = `H_WRITE;
+    HWRITE  = `H_READ;
     HSIZE   = `H_SIZE_32;
 
     prev_HADDR    = prev_HADDR + (2**HSIZE );
@@ -40,6 +38,7 @@ program test(mem_intf vif);
     my_tr                = new();
     env.gen.trans        = my_tr;
     env.gen.repeat_count = 25;
+    env.scb.hport_data_access = 0;
     $readmemh("local_mem.txt", env.scb.local_memory,0,255); 
     env.run();
   end
