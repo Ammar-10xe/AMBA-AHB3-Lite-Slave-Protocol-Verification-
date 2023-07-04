@@ -255,9 +255,9 @@ class scoreboard;
           // local_memory[trans.HADDR + 1 ] = trans.HWDATA[15:8 ];
           // local_memory[trans.HADDR + 2 ] = trans.HWDATA[23:16];
           // local_memory[trans.HADDR + 3 ] = trans.HWDATA[31:24];
-          local_memory[trans.HADDR] = trans.HWDATA;
+          local_memory[trans.HADDR[31:2]] = trans.HWDATA;
           #1; // Introducing a delay to ensure assignment has taken effect
-          if (trans.HWDATA == local_memory[trans.HADDR]) begin
+          if (trans.HWDATA == local_memory[trans.HADDR[31:2]]) begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - write data verification successful");
           end else begin
             $display("\033[37m✘ \033[1;31mTest Failed\033[0m - write data verification failed");
@@ -386,7 +386,7 @@ class scoreboard;
          $display("╭────────────────────────────╮");
          $display("│     LITTLE ENDIAN WORD     │");
          $display("╰────────────────────────────╯");       
-         local_read_word  = local_memory[trans.HADDR[31:2]];
+         local_read_word  = local_memory[trans.HADDR[9:2]];
          #1;
           if ( trans.HRDATA == local_read_word)begin
             $display("\033[37m✓ \033[1;32mTest Passed\033[0m - Read data verification successful");

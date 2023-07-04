@@ -9,6 +9,8 @@ program test(mem_intf vif);
         HBURST  .rand_mode(0);
         HSIZE   .rand_mode(0);
         HADDR   .rand_mode(0);
+        HTRANS  .rand_mode(0);
+        HTRANS  = `H_NONSEQ;
         HADDR   = 32'd16;
         HBURST  =`H_SINGLE;
         HSIZE   = `H_SIZE_32;
