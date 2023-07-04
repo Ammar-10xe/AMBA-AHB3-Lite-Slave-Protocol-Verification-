@@ -37,11 +37,9 @@ class driver;
   forever begin
     trans = new();
     gen2driv.get(trans);
-    @(posedge vif.DRIVER.HCLK);
     // $display("--------- [DRIVER-TRANSFER: %0d] ---------",no_transaction);
     `DRIV_IF.HSEL    <= trans.HSEL;
     `DRIV_IF.HADDR   <= trans.HADDR;
-    `DRIV_IF.HWDATA  <= trans.HWDATA;
     `DRIV_IF.HWRITE  <= trans.HWRITE;
     `DRIV_IF.HSIZE   <= trans.HSIZE;
     `DRIV_IF.HBURST  <= trans.HBURST;
@@ -49,6 +47,8 @@ class driver;
     `DRIV_IF.HTRANS  <= trans.HTRANS;
     `DRIV_IF.HREADY  <= trans.HREADY;
     //  $display("-----------------------------------------");
+     @(posedge vif.DRIVER.HCLK);
+     `DRIV_IF.HWDATA  <= trans.HWDATA;
      no_transaction++;
     // print_drv();
   end
