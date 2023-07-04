@@ -13,7 +13,7 @@ program test(mem_intf vif);
         HTRANS  = `H_NONSEQ;
         HADDR   = 32'd16;
         HBURST  =`H_SINGLE;
-        HSIZE   = `H_SIZE_32;
+        HSIZE   = `H_SIZE_8;
 
         if (ctrl_rw % 2 != 0) begin
             HWRITE =`H_READ;
