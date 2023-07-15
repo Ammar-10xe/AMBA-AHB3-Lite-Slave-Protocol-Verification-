@@ -21,7 +21,6 @@ task print_mon(); //for debuggin purposes
   $display("HPROT %h",    `MON_IF.HPROT);
   $display("HTRANS %h",   `MON_IF.HTRANS);
   $display("HREADY %h",   `MON_IF.HREADY);
-  $display("output obtained is...");
   $display("HRDATA %h",   `MON_IF.HRDATA);
   $display("HREADYOUT %h",`MON_IF.HREADYOUT);
   $display("HRESP %h",    `MON_IF.HRESP);
