@@ -1,4 +1,4 @@
-# AHB_Slave_Verification
+# AHB Slave Verification
 ## Introduction
 AMBA AHB-Lite is a bus interface designed for high-performance computer designs. It allows one device to control the communication on the bus and enables fast data transfer.
 
